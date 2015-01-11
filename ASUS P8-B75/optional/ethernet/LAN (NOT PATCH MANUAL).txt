@@ -1,0 +1,41 @@
+OperationRegion (GPIO, SystemIO, 0x0800, 0x06)
+ Field (GPIO, ByteAcc, NoLock, Preserve)
+ {
+ GO01, 8,
+ GO02, 8,
+ GO03, 8,
+ GO04, 8,
+ GO05, 8,
+ GP9, 1
+ }
+
+//Lan card ADR: 0x001C0001
+
+ Device (GIGE)
+ {
+ Name (_ADR, Zero)
+ Name (_PRW, Package (0x02)
+ {
+ 0x09,
+ 0x03
+ })
+ Method (EWOL, 1, NotSerialized)
+ {
+ If (LEqual (Arg0, One))
+ {
+ Or (GP9, One, GP9)
+ }
+ Else
+ {
+ And (GP9, Zero, GP9)
+ }
+ If (LEqual (Arg0, GP9))
+ {
+ Return (Zero)
+ }
+ Else
+ {
+ Return (One)
+ }
+ }
+ }
